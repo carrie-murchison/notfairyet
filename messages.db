@@ -1,0 +1,18 @@
+import sqlite3
+conn = sqlite3.connect('messages.db')
+c = conn.cursor()
+# Create messages table
+c.execute('''CREATE TABLE messages
+             (id INTEGER PRIMARY KEY AUTOINCREMENT,
+              message_text TEXT,
+              company_name TEXT)''')
+# Insert some sample data into the table
+c.execute("INSERT INTO messages (message_text, company_name) VALUES (?, ?)", ("Hello, world!", "Acme Co."))
+c.execute("INSERT INTO messages (message_text, company_name) VALUES (?, ?)", ("How are you?", "Beta Industries"))
+c.execute("INSERT INTO messages (message_text, company_name) VALUES (?, ?)", ("I'm doing well, thanks!", "Acme Co."))
+conn.commit()
+# Sort messages by company name
+c.execute("SELECT * FROM messages ORDER BY company_name")
+messages = c.fetchall()
+print(messages)
+conn.close()
